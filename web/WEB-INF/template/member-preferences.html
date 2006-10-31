@@ -1,0 +1,52 @@
+<h1>Edit Member</h1>
+<form method="POST">
+
+<p class="error">${vars.error?default("")}</p>
+
+<table width="75%">
+	<tr valign="top">
+		<td align="right">Username</td>
+		<td>${vars.member.username?default("")}</td>
+	</tr><tr valign="top">
+		<td align="right">Full Name </td>
+	  <td><input type="text" name="fullname" value="${vars.member.fullname?default("")}"/></td>
+	</tr><tr valign="top">
+		<td align="right">Password</td>
+	  <td><input type="password" name="password" value=""/></td>
+	</tr><tr valign="top">
+		<td align="right">Password (Confirm)</td>
+	  <td><input type="password" name="confirm-password" value=""/></td>
+	</tr><tr valign="top">
+		<td align="right">Email</td>
+	  <td><input type="text" name="email" value="${vars.member.email?default("")}"/></td>
+	</tr><tr valign="top">
+		<td align="right">Address</td>
+	  <td><textarea name="address" rows="5" cols="40">${vars.member.address?default("")}</textarea></td>
+	</tr><tr valign="top">
+		<td align="right">Credit</td>
+		<td>${vars.member.credit?default("0")}</td>
+	</tr>	
+	
+	<tr valign="top">	
+		<td align="right">Tariff Class </td>		
+		<td>${vars.member.tariff.name?default("")}</td>
+	</tr>
+	
+	<tr valign="top">
+		<td align="right">Payment</td>
+		<td>${vars.member.type.value?default("")}</td>
+	</tr>
+	
+	<tr valign="top">
+		<td align="right">Status</td>
+		<td>${vars.member.status.value?default("")}</td>
+	</tr>
+	
+	<tr valign="top">
+		<td align="right">&nbsp;</td>
+		<td>
+	  <input type="submit" name="save" value="save" class="button"/>	  </td>
+	</tr>
+</table>
+
+</form>

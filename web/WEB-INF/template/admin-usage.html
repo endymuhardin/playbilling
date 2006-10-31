@@ -1,0 +1,27 @@
+<h1>Member Online </h1>
+<table id="sessions" width="100%" border="1" align="center">
+  <thead>
+  <tr>
+    <th width="25%">Username</th>
+    <th width="25%">IP Address</th>
+    <th width="15%">Start Time</th>
+    <th width="20%">Duration</th>
+    <th width="20%">Bill</th>
+    <th width="10%">&nbsp</th>
+  </tr> 
+  </thead>   
+  <tbody>
+  <#list vars.openSessions as session> 
+  <tr>
+    <td>${session.member.username}</td>
+    <td>${session.ipAddress?default("")}</td>
+    <td>${session.startTime?time}</td>
+    <td>${session.stringDuration}</td>
+    <td>Rp. ${session.charge}</td>
+    <td>
+    	<a href="usage.htm?id=${session.id}&opt=end">Close</a>
+	</td>
+  </tr>
+  </#list> 
+  </tbody>
+</table>

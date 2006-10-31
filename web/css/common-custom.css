@@ -1,0 +1,49 @@
+BODY{
+  font-family : Verdana, Arial, Helvetica, sans-serif; font-size : 8pt; margin : 0px;
+  }
+
+P {
+  font-family : Verdana, Arial, Helvetica, sans-serif; font-size : 8pt; margin: 5px; text-align: justify;
+  }
+
+.button {
+	BORDER-RIGHT: #999999 1px solid; BORDER-TOP: #999999 1px solid; FONT-SIZE: 10px; BORDER-LEFT: #999999 1px solid; COLOR: #000000; BORDER-BOTTOM: #999999 1px solid; FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif; BACKGROUND-COLOR: #cdd6e4
+	}
+
+.text {border: 1px black solid;
+	font-family: Osaka,verdana,Sans-Serif;
+	font-size: 8pt;
+}
+
+.title {FONT-WEIGHT: bold;
+	FONT-SIZE: 14px;
+	COLOR: #ffffff;
+	FONT-FAMILY: "Trebuchet MS", Arial, Verdana, sans-serif;
+	text-align: center;
+}
+A {
+	COLOR: #003399; 
+	TEXT-DECORATION: underline;
+	font-size: 10pt;
+}
+
+A:hover {
+	COLOR: #0000ff; TEXT-DECORATION: none
+}
+
+.error {
+	font-family: Osaka,verdana,Sans-Serif;
+	font-size: 8pt;
+	font-weight: bold;
+	color: red;
+	text-align: center;
+}
+
+strong {
+	font-family: Osaka,verdana,Sans-Serif;
+	font-size: 10pt;
+	font-weight: bold;
+	color: black;
+	text-align: center;
+}
+

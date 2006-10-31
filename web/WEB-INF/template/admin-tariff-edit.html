@@ -1,0 +1,39 @@
+<#import "spring.ftl" as spring />
+
+<h1>Edit  Tariff Configuration</h1>
+<form method="POST">
+
+<table>
+	<tr>
+		<td align="right">Name</td>
+		<td><@spring.formInput "tariff.name"/> <@spring.showErrors "<br>"/></td>
+	</tr>
+	<tr>
+		<td align="right">First Period</td>
+		<td><@spring.formInput "tariff.gracePeriod"/> <@spring.showErrors "<br>"/> (minute)</td>
+	</tr>
+	<tr>
+		<td align="right">Tariff for First Period</td>		
+		<td><@spring.formInput "tariff.gracePeriodCharge"/> <@spring.showErrors "<br>"/> (Rp)</td>
+	</tr>
+	<tr>
+		<td align="right">Time Unit</td>
+		<td><@spring.formInput "tariff.chargeUnit"/> <@spring.showErrors "<br>"/> (minute)</td>
+	</tr>
+	<tr>
+		<td align="right">Tariff per Time Unit</td>
+		<td><@spring.formInput "tariff.rate"/> <@spring.showErrors "<br>"/> (Rp)</td>
+	</tr>		
+	<tr><td>&nbsp;</td>
+	</tr>
+		<td align="right">&nbsp;</td>
+		<td>
+			<input type="submit" name="save" value="Save" class="button"/> 
+			<input type="submit" name="delete" value="Reset" class="button"/>
+			<a href="tariff.htm"><input type="button" name="cancel" value="Cancel" class="button"/></a>
+			<@spring.showErrors "<br>"/> 
+		</td>
+	</tr>
+</table>
+
+</form>

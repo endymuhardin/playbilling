@@ -1,0 +1,36 @@
+<h1>Member List</h1>
+<p class="error">${vars.errors?default("")}</p>
+
+<a href="member-edit.htm">Add Member</a><br /><br />
+<table id="members" width="100%" border="1" align="center">
+  <thead>
+  <tr>
+    <th width="5%">ID</th>
+    <th width="15%">Username</th>
+    <th width="20%">Full Name</th>
+    <th width="15%">Email</th>    
+    <th width="10%">Registration Date</th>
+    <th width="10%">Tarif Class</th>
+    <th width="10%">Payment</th>
+    <th width="10%">Status</th>
+    <th width="5%">&nbsp</th>
+  </tr> 
+  </thead>   
+  <tbody>
+  <#list vars.allMember as member>
+  <tr>
+    <td>${member_index+1}</td>
+    <td>${member.username}</td>
+    <td>${member.fullname}</td>
+    <td>${member.email}</td>    
+    <td>${member.dateRegistered}</td>
+    <td>${member.tariff.name}</td>
+    <td>${member.type.value}</td>
+    <td>${member.status.value}</td>
+    <td>
+    	<a href="member-edit.htm?id=${member.id}">edit</a>
+	</td>
+  </tr>
+  </#list>
+  </tbody>
+</table>

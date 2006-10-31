@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN/EN" "http://www.springframework.org/dtd/spring-beans.dtd" >
+<beans>
+
+  <!-- Filter Chain as configured in web.xml -->
+  <!-- use several filter : 
+       - channelProcessingFilter : for ensuring all access goes through https
+       - httpSessionContextIntegrationFilter : for managing ContextHolder in HttpSession
+       - authenticationProcessingFilter : for authentication process
+       - securityEnforcementFilter : for protecting access to all configured requests  
+  -->
+  
+
+  <bean id="filterChainProxy" class="net.sf.acegisecurity.util.FilterChainProxy">
+      <property name="filterInvocationDefinitionSource">
+         <value>
+		    CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
+		    PATTERN_TYPE_APACHE_ANT
+            /**=httpSessionContextIntegrationFilter,authenticationProcessingFilter,securityEnforcementFilter
+         </value>
+      </property>
+  </bean>
+
+  <bean id="channelProcessingFilter" class="net.sf.acegisecurity.securechannel.ChannelProcessingFilter">
+  	<property name="channelDecisionManager"><ref bean="channelDecisionManager"/></property>
+  	<property name="filterInvocationDefinitionSource">
+        <value>
+           CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
+           PATTERN_TYPE_APACHE_ANT
+            /*=REQUIRES_SECURE_CHANNEL
+        </value>
+    </property>
+  </bean>
+  
+  <bean id="channelDecisionManager" class="net.sf.acegisecurity.securechannel.ChannelDecisionManagerImpl">
+  	<property name="channelProcessors">
+  		<list>
+  			<ref bean="secureChannelProcessor"/>
+  			<ref bean="insecureChannelProcessor"/>
+  		</list>
+  	</property>
+  </bean>
+  
+  <bean id="secureChannelProcessor" class="net.sf.acegisecurity.securechannel.SecureChannelProcessor"/>
+  <bean id="insecureChannelProcessor" class="net.sf.acegisecurity.securechannel.InsecureChannelProcessor"/>
+  
+  <!-- put and get ContextHolder in HttpSession -->  
+  <bean id="httpSessionContextIntegrationFilter" class="net.sf.acegisecurity.context.HttpSessionContextIntegrationFilter">
+      <property name="context"><value>net.sf.acegisecurity.context.security.SecureContextImpl</value></property>
+  </bean>
+  
+  <!-- 
+  define authentication workflow: 
+  - if not authenticated, redirect to authenticationFailureUrl
+  - after successful authentication, redirect to original target (as stored in HttpSession), 
+    if no target defined, redirect to defaultTargetUrl
+  - loginform (HTML Page) must has its <form action=""> configured to filterProcessesUrl
+  - use authenticationManager to process login information
+   -->
+  <bean id="authenticationProcessingFilter" class="net.sf.acegisecurity.ui.webapp.AuthenticationProcessingFilter">
+	    <property name="authenticationManager">
+	        <ref bean="authenticationManager"/>
+	    </property>
+	    <property name="authenticationFailureUrl">
+	        <value>/admin-login.html</value>
+	    </property>
+	    <property  name="defaultTargetUrl">
+	        <value>/admin/tariff.html</value>
+	    </property>
+	    <property name="filterProcessesUrl">
+	        <value>/check_login</value>
+	    </property>
+	</bean>
+	
+	<!--
+	define list of authenticationProvider responsible to process login information
+	since we are using username and password to authenticate, we configure DaoAuthenticationProvider 
+	if you would like to use JAAS, configure a JaasAuthenticationProvider bean
+	-->
+	<bean id="authenticationManager" class="net.sf.acegisecurity.providers.ProviderManager">
+	    <property name="providers">
+	        <list>
+	            <ref bean="daoAuthenticationProvider"/>
+	        </list>
+	    </property>
+	</bean>
+	
+	<!-- 
+	username and password looked up using DaoAuthenticationProvider
+	several implementation exists: 
+	1. InMemoryDaoImpl: store username, password, and authorities in simple configuration as shown below
+	2. JdbcDaoImpl: store username, password, and authorities in database using predefined database schema (see Reference)
+	
+	what if we would like to use our own schema? or using hibernate? utilize CMP? 
+	these are the alternatives : 
+	1. configure JdbcDaoImpl to use our defined SQL Queries
+	2. create custom class implementing DaoAuthenticationProvider
+	-->
+	<bean id="daoAuthenticationProvider" class="net.sf.acegisecurity.providers.dao.DaoAuthenticationProvider">
+	     <property name="authenticationDao">
+	         <ref local="memoryAuthenticationDao"/>
+	     </property>
+	</bean>
+	
+	<!--
+	Store username and password in memory.
+	If we would like to use database, replace with JdbcDaoImpl
+	-->
+	<bean id="memoryAuthenticationDao" class="net.sf.acegisecurity.providers.dao.memory.InMemoryDaoImpl">
+	    <property name="userMap">
+	        <value>
+	            ${admin.username}=${admin.password},ROLE_ADMIN
+	        </value>
+	    </property>
+	</bean>
+
+  <!-- ensure all request examined by filterSecurityInterceptor -->
+  <!-- redirect to authenticationEntryPoint upon unauthenticated access -->
+  <bean id="securityEnforcementFilter" class="net.sf.acegisecurity.intercept.web.SecurityEnforcementFilter">
+	    <property name="filterSecurityInterceptor">
+	        <ref bean="filterInvocationInterceptor"/>
+	    </property>
+	    <property name="authenticationEntryPoint">
+	        <ref bean="authenticationEntryPoint"/>
+	    </property>
+	</bean>
+	
+	<bean id="authenticationEntryPoint" class="net.sf.acegisecurity.ui.webapp.AuthenticationProcessingFilterEntryPoint">
+	    <property name="loginFormUrl">
+	        <value>/admin-login.html</value>
+	    </property>
+	</bean>
+	
+	<!-- 
+	configure access control rule here :
+	1. authenticationManager to be invoked upon unauthenticated request
+	2. accessDecisionManager to decide whether authenticated request has sufficient authority to requested operation
+	3. objectDefinitionSource: protected resources
+	-->
+	<bean id="filterInvocationInterceptor" class="net.sf.acegisecurity.intercept.web.FilterSecurityInterceptor">
+	    <property name="authenticationManager">
+	        <ref bean="authenticationManager"/></property>
+	    <property name="accessDecisionManager">
+	        <ref bean="accessDecisionManager"/></property>
+	    <property name="objectDefinitionSource">
+        <value>
+            CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
+           PATTERN_TYPE_APACHE_ANT
+            /admin/*=ROLE_ADMIN
+        </value>
+	    </property>
+	</bean>
+	
+	<!--  
+	configure authorization decision here. there are several implementation : 
+	1. Unanimous based : all decisionVoters has to vote ACCESS_GRANTED
+	2. Affirmative based : one voter voting ACCESS_GRANTED is enough
+	3. Consensus based : majority wins
+	-->
+	<bean id="accessDecisionManager" class="net.sf.acegisecurity.vote.UnanimousBased">
+	    <property name="allowIfAllAbstainDecisions">
+	        <value>false</value>
+	    </property>
+	    <property name="decisionVoters">
+	        <list>
+	           <ref local="roleVoter"/>
+	        </list>
+	    </property>
+	</bean>
+	
+	<!-- 
+	this is the voter 
+	there are 2 voters : 
+	1. Role Voter : examine ROLE_* config attribute
+	2. BasicAclEntryVoter : examine Access Control List mapping in storage
+	-->
+	<bean id="roleVoter" class="net.sf.acegisecurity.vote.RoleVoter"/>
+</beans>
+

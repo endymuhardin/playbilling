@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<beans>	
+	<bean id="sqlMapClientBilling" class="org.springframework.orm.ibatis.SqlMapClientFactoryBean">
+	        <property name="configLocation"><value>WEB-INF/conf/sqlmap-billing.xml</value></property>
+	</bean>
+	
+	<bean id="billingService" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager"><ref bean="transactionManager"/></property>
+		<property name="target"><ref bean="billingServiceTarget"/></property>
+		<property name="transactionAttributes">
+			<props>
+				<prop key="create*">PROPAGATION_REQUIRED</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+				<prop key="refresh*">PROPAGATION_REQUIRED</prop>
+				<prop key="connect*">PROPAGATION_REQUIRED</prop>
+				<prop key="cleanup*">PROPAGATION_REQUIRED</prop>
+				<prop key="disconnect*">PROPAGATION_REQUIRED</prop>
+				<prop key="*">PROPAGATION_REQUIRED,readOnly</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<bean id="billingServiceTarget" class="com.artivisi.billing.DefaultBillingService">
+		<property name="memberDao"><ref bean="memberDao"/></property>
+		<property name="sessionDao"><ref bean="sessionDao"/></property>
+		<property name="tariffDao"><ref bean="simpleTariffDao"/></property>
+		<property name="connectionManager"><ref bean="connectionManager"/></property>
+		<property name="sessionExpirationLimit"><value>${session.timeout}</value></property>
+	</bean>
+	
+	<bean id="connectionManager" class="com.artivisi.billing.connection.ShellScriptConnectionManager">
+		<property name="openCommand"><value>${shell.open}</value></property>
+		<property name="closeCommand"><value>${shell.close}</value></property>
+	</bean>
+	
+	<!-- Scheduler to cleanup expired sessions -->
+	<bean id="methodInvokingJobDetail" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean"> 
+		<property name="targetObject">
+			<ref bean="billingService"/>
+		</property> 
+		<property name="targetMethod">
+			<value>cleanupSessions</value>
+		</property> 
+	</bean>
+	
+	<!-- trigger -->
+	<bean id="simpleTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerBean"> 
+		<property name="jobDetail"> 
+			<ref bean="methodInvokingJobDetail"/> 
+		</property> 
+		<property name="startDelay"> 
+			<!-- 5 seconds --> 
+			<value>5000</value> 
+		</property> 
+		<property name="repeatInterval"> 
+			<!-- repeat every 10 seconds --> 
+			<value>10000</value> 
+		</property> 
+	</bean> 
+	
+	<!-- scheduler -->
+	<bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean"> 
+		<property name="triggers">
+			<list> 
+				<ref local="simpleTrigger"/> 
+			</list> 
+		</property> 
+	</bean>
+	
+	<!-- DAO Beans -->
+	<bean id="sequencerDatabaseCreator" class="com.artivisi.common.dao.ibatis.SequencerDatabaseInit">
+	  <property name="sqlMapClient"><ref bean="sqlMapClientBilling"/></property>
+	  <property name="dataSource"><ref bean="dataSource"/></property>
+	</bean>
+	
+	<bean id="sequencer" class="com.artivisi.common.dao.ibatis.SequencerIbatis">
+	  <property name="dataSource"><ref bean="dataSource"/></property>
+	  <property name="sqlMapClient"><ref local="sqlMapClientBilling"/></property>
+	</bean>
+	
+	<bean id="memberDatabaseCreator" class="com.artivisi.billing.dao.ibatis.MemberDatabaseInit">
+	  <property name="sqlMapClient"><ref bean="sqlMapClientBilling"/></property>
+	  <property name="dataSource"><ref bean="dataSource"/></property>
+	</bean>
+	
+	<bean id="memberDao" class="com.artivisi.billing.dao.ibatis.MemberDaoIbatis">
+	  <property name="dataSource"><ref bean="dataSource"/></property>
+	  <property name="sqlMapClient"><ref local="sqlMapClientBilling"/></property>
+	  <property name="sequencer"><ref bean="sequencer"/></property>
+  	  <property name="simpleTariffDao"><ref bean="simpleTariffDao"/></property>
+	</bean>
+	
+	<bean id="simpleTariffDatabaseCreator" class="com.artivisi.billing.dao.ibatis.SimpleTariffDatabaseInit">
+	  <property name="sqlMapClient"><ref bean="sqlMapClientBilling"/></property>
+	  <property name="dataSource"><ref bean="dataSource"/></property>
+	</bean>
+	
+	<bean id="simpleTariffDao" class="com.artivisi.billing.dao.ibatis.SimpleTariffDaoIbatis">
+	  <property name="dataSource"><ref bean="dataSource"/></property>
+	  <property name="sqlMapClient"><ref local="sqlMapClientBilling"/></property>
+	  <property name="sequencer"><ref bean="sequencer"/></property>
+	</bean>
+	
+	<bean id="sessionDatabaseCreator" class="com.artivisi.billing.dao.ibatis.SessionDatabaseInit">
+	  <property name="sqlMapClient"><ref bean="sqlMapClientBilling"/></property>
+	  <property name="dataSource"><ref bean="dataSource"/></property>
+	</bean>
+	
+	<bean id="sessionDao" class="com.artivisi.billing.dao.ibatis.SessionDaoIbatis">
+	  <property name="dataSource"><ref bean="dataSource"/></property>
+	  <property name="sqlMapClient"><ref local="sqlMapClientBilling"/></property>
+	  <property name="sequencer"><ref bean="sequencer"/></property>
+	  <property name="memberDao"><ref bean="memberDao"/></property>
+	</bean>
+</beans>

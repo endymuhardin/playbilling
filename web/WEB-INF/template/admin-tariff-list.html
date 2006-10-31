@@ -1,0 +1,39 @@
+<h1>Tariff Configuration</h1>
+
+<p class="error">${vars.errors?default("")}</p>
+
+<a href="tariff-edit.htm">Add Tariff Configuration</a><br /><br />
+<table id="rates" width="100%" border="1" align="center">
+  <thead>
+  <tr>
+    <th width="5%">No.</th>
+    <th width="35%">Name</th>
+    <!--
+    <th width="10%">Time Unit</th>
+    -->
+    <th width="10%">First Period (minute)</th>
+    <th width="10%">Tariff for First Period (Rp)</th>
+    <th width="10%">Time Unit (minute)</th>
+    <th width="10%">Tariff per Time Unit (Rp)</th>
+    <th width="10%">&nbsp</th>
+  </tr> 
+  </thead>   
+  <tbody>
+  <#list vars.allTariff as tariff>
+  <tr>
+    <td>${tariff_index + 1}</td>
+    <td>${tariff.name}</td>
+    <!--
+    <td>${tariff.timeUnit.value}</td>
+    -->
+    <td>${tariff.gracePeriod}</td>
+    <td>${tariff.gracePeriodCharge}</td>
+    <td>${tariff.chargeUnit}</td>
+    <td>${tariff.rate}</td>
+    <td>
+    	<a href="tariff-edit.htm?id=${tariff.id}">edit</a>
+	</td>
+  </tr>
+  </#list> 
+  </tbody>
+</table>
