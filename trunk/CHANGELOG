@@ -1,0 +1,82 @@
+CHANGELOG
+---------
+
+playBilling v1.2
+
+2006-09-30
+    - Stop watching G30S/PKI
+    - Name changes:
+	- playBilling to pbstart.sh
+	- playBilling_shutdown to pbstop.sh
+	- playBilling_compile to compile.sh
+	- playBilling_init to network.init
+    - Move file:
+	- rebuild-firewall.sh to ./web/WEB-INF/shell-scripts/
+    - Enable captive portal feature by default
+
+playBilling v1.1
+
+2006-03-22
+    - Switch back to http from https due to iptables redirection
+    - Add simple installation step-by-step on file INSTALL
+
+2006-03-21
+    - Replace logout.jsp
+        - delete logout.jsp
+        - add com.artivisi.billing.web.LogoutServlet
+        - remove tools.jar
+        - add mapping in web.xml
+        - update hyperlink in template: index.html and member-index.html
+    - Disable firewall integration by default
+        - comment line for rebuild-firewall in playBilling shell script
+        - change shell script config in WEB-INF/conf/admin.properties to use dummy script
+    - Update database schema 
+
+2006-01-09
+    - First package released on SourceForge, PlayBilling 1.0
+
+2005-06-23
+    - Fix calendar popup in admin-member-edit.html
+    - Modified firewall related files to read configurations from playBilling_init
+    - Add field Member.dateExpired. Affected files : 
+		Member.java
+		MemberDaoIbatis.java
+		MemberDaoIbatisTest.java
+		MemberTest.java (new)
+		schema-hsqldb.sql
+		Billing-Schema-hsqldb.xml
+		Member-hsqldb.xml
+		MemberFormController.java
+		admin-member-edit.html
+    - Add member expiration check upon login, refresh, and cleanup. Affected files : 
+		DefaultBillingService.java
+		LoginController.java
+		BillingMonitor.java
+
+2005-06-22
+    - Add ant target to create jar distribution
+    - Add sessionExpirationLimit field for member object
+    - Add exception handler for duplicate login
+
+2005-06-19
+    - Add database/rebuild_firewall.sh to maintain firewall rules when server down
+      and get back online again
+    - Add firewall rules to redirect all outgoing http request into playBilling login
+      page when user has not authenticated
+
+2005-06-14
+    - New Feature : 
+      1. Admin can close user session
+      2. Admin can specify year field for searching (Periodic Report)
+      3. Admin can specify year field for searching (Member Report)
+      4. Total duration text (Periodic Report)
+      5. Total duration text (Member Report)
+      6. Total charge text (Periodic Report)
+      7. Total charge text (Member Report)
+      8. Logout screen after finishing session 
+      9. Member area
+      10. Activate embedded servlet engine using Jetty
+      11. Activate SSL channel (using Jetty)
+      12. Enforce SSL usage (using Acegi)
+    - Fix session duration affected with timezone
+

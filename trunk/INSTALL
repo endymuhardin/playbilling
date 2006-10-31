@@ -1,0 +1,42 @@
+INSTALLATION
+------------
+
+Later, right now playBilling intended for slightly advance java and linux user only.
+
+
+But, if you insists.. follow steps below for easy getting started guide:
+
+1. Download latest version of playBilling (currently v1.2)
+2. Copy the file to /usr/local
+3. Extract the file, if its tar.gz then run tar -zxf playbilling-1.2.tar.gz
+   and if its tar.bz2 then run tar -jxf playbilling-1.2.tar.bz2
+4. Edit file /usr/local/playBilling/network.init and configure according
+   to your network setup
+5. Make sure you already setup an environtment variable for JAVA_HOME and ANT_HOME
+   also make sure that $JAVA_HOME/bin and $ANT_HOME/bin is on $PATH
+6. Copy file database/sqltool.rc to /root/
+7. Get inside /usr/local/playBilling and run ./compile (just for the first time)
+8. When no error echoed, run ./pbstart.sh to start the engine and ./pbstop.sh to shut it down
+
+
+So.. you have playBilling running on your router right now, cool keh keh keh.. 
+
+
+Below are steps to configure playBilling:
+
+1. Shutdown running playBilling, run ./pbstop.sh when you're at /usr/local/playBilling
+2. Go to /usr/local/playBilling/web/WEB-INF/conf
+   And edit file admin.properties to suit your needs
+3. Back to /usr/local/playBilling
+   And edit file network.init to suit your needs
+4. Execute ./pbstart.sh when you're at /usr/local/playBilling
+
+
+Important informations:
+
+1. Default username is admin
+2. Default password for admin is secret
+3. Default playBilling port is 8442 (http not https)
+4. Firewall configurations are on: ./web/WEB-INF/shell-scripts/
+
+Good luck !

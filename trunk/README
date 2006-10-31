@@ -1,0 +1,20 @@
+README
+------
+
+playBilling version 1.2
+
+playBilling is a webbased billing system for internet cafe and wireless hotspot provider 
+mostly written in Java, featured with: tariff management, prepaid, postpaid and discounts, 
+user management and extensive reporting system
+
+http://sourceforge.net/projects/playbilling
+
+Developer(s):
+    - Anton Raharja (anton@ngoprek.org)
+    - Endy Muhardin (endy@artivisi.com)
+
+
+INSTALL
+-------
+Please see file INSTALL
+

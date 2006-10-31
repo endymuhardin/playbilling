@@ -1,0 +1,11 @@
+# firewall configurations for playBilling
+
+# LAN
+CLIENT_NETWORK="10.22.77.0/24"
+
+# LAN Network ID
+CLIENT_NETID="10.22.77"
+
+# playBilling Login Address
+LOGIN_ADDRESS="10.22.77.1:8442"
+
