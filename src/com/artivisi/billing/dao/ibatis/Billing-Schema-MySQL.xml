@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd"> 
+<sqlMap namespace="SchemaMySQL">  	
+    <update id="createDatabaseSimpleTariff">
+	  	CREATE TABLE billing_simple_tariff (
+			id INTEGER PRIMARY KEY, 
+			name VARCHAR(200), 
+			rate DECIMAL, 
+			charge_unit INTEGER, 
+			time_unit VARCHAR, 
+			grace_period INTEGER, 
+			grace_period_charge DECIMAL, 
+			UNIQUE(name)
+		);
+    </update>
+    <delete id="dropDatabaseSimpleTariff">
+    	DROP TABLE billing_simple_tariff
+    </delete>
+    
+    <update id="createDatabaseMember">
+	  	CREATE TABLE billing_member (
+			id INTEGER PRIMARY KEY, 
+			username VARCHAR(200), 
+			password VARCHAR(200), 
+			fullname VARCHAR(200), 
+			email VARCHAR(200), 
+			address VARCHAR(200), 
+			tariff_id INTEGER, 
+			autoconnect VARCHAR(10),
+			credit DECIMAL,
+			session_expiration_limit INTEGER,
+			member_status VARCHAR(200),
+			member_type VARCHAR(200), 
+			register_date DATETIME, 
+			UNIQUE(username), 
+			FOREIGN KEY (tariff_id) REFERENCES billing_simple_tariff(id)
+		);
+    </update>
+    <delete id="dropDatabaseMember">
+    	DROP TABLE billing_member
+    </delete>
+    
+    <update id="createDatabaseSession">
+	  	CREATE TABLE billing_session (
+			id INTEGER, 
+			member_id INTEGER, 
+			ip_address VARCHAR(200), 
+			start_time DATETIME, 
+			end_time DATETIME, 
+			last_visit DATETIME, 
+			expiration_limit INTEGER, 
+			charge DECIMAL, 
+			session_status VARCHAR(200),
+			FOREIGN KEY (member_id) REFERENCES billing_member(id)
+		);
+    </update>
+    <delete id="dropDatabaseSession">
+    	DROP TABLE billing_session
+    </delete>
+</sqlMap>

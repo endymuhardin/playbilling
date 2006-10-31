@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd"> 
+<sqlMap namespace="Member">      
+    
+    <insert id="insertMember" parameterClass="com.artivisi.billing.Member">
+        INSERT INTO billing_member 
+        (id, username, password, fullname, email, address, tariff_id, autoconnect, credit, session_expiration_limit, member_type, member_status, register_date, expire_date)
+        VALUES 
+        (#id#, #username#, #password#, #fullname#, #email#, #address#,
+        #tariff.id#, #autoconnect#, #credit#, #sessionExpirationLimit#, #type.value#, #status.value#, #dateRegistered#, #dateExpired#)
+    </insert>
+    
+    <update id="updateMember" parameterClass="com.artivisi.billing.Member">
+        UPDATE billing_member SET
+        password=#password#, 
+        email=#email#, 
+        fullname=#fullname#, 
+        address=#address#,
+        autoconnect=#autoconnect#, 
+        credit=#credit#, 
+        session_expiration_limit=#sessionExpirationLimit#, 
+        member_type=#type.value#, 
+        member_status=#status.value#, 
+        register_date=#dateRegistered#, 
+        expire_date=#dateExpired#,
+        tariff_id=#tariff.id#
+        WHERE id=#id#
+    </update>
+        
+    <delete id="deleteMember" parameterClass="com.artivisi.billing.Member">
+    	DELETE FROM billing_member WHERE id=#id#
+    </delete>
+    
+    <select id="getAllMember" resultClass="java.util.HashMap"> 
+        SELECT * FROM billing_member ORDER BY register_date ASC
+    </select> 
+    
+    <select id="getMemberById" parameterClass="int" resultClass="java.util.HashMap"> 
+        SELECT * FROM billing_member WHERE id=#id#
+    </select> 
+    
+    <select id="getMemberByUser" parameterClass="java.lang.String" resultClass="java.util.HashMap"> 
+        SELECT * FROM billing_member WHERE username=#value#
+    </select>
+    
+    <select id="getMemberByUsernameAndPassword" parameterClass="java.util.Map" resultClass="java.util.HashMap"> 
+        SELECT * FROM billing_member WHERE username=#username# AND password=#password#
+    </select> 
+    
+    <select id="searchMemberByExample" parameterClass="com.artivisi.billing.Member" resultClass="java.util.HashMap"> 
+        SELECT * FROM billing_member 
+        <dynamic prepend="WHERE"> 	        
+	        <isNotNull prepend= "OR" property="username"> 
+	        	username LIKE #username#
+	        </isNotNull> 
+	        <isNotNull prepend= "OR" property="fullname"> 
+	        	fullname LIKE #fullname#
+	        </isNotNull> 
+	        <isNotNull prepend= "OR" property="email"> 
+	        	email LIKE #email#
+	        </isNotNull> 
+	        <isNotNull prepend= "OR" property="address"> 
+	        	address LIKE #address#
+	        </isNotNull> 
+	        <isNotNull prepend= "OR" property="type"> 
+	        	member_type LIKE #type.value#
+	        </isNotNull> 
+	        <isNotNull prepend= "OR" property="status"> 
+	        	member_status LIKE #status.value#
+	        </isNotNull> 
+	        <isNotNull prepend= "OR" property="tariff"> 
+	        	tariff_id = #tariff.id#
+	        </isNotNull> 
+        </dynamic>
+    </select> 
+</sqlMap>

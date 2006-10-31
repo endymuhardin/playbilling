@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd"> 
+<sqlMap namespace="SimpleTariff">  	 
+    <insert id="insertSimpleTariff" parameterClass="com.artivisi.billing.SimpleTariff">
+        INSERT INTO billing_simple_tariff VALUES 
+        (#id#, #name#, #rate#, #chargeUnit#, #timeUnit.value#, #gracePeriod#, #gracePeriodCharge#)
+    </insert>
+    
+    <update id="updateSimpleTariff" parameterClass="com.artivisi.billing.SimpleTariff">
+        UPDATE billing_simple_tariff SET
+        name=#name#,
+		rate=#rate#,
+		charge_unit=#chargeUnit#, 
+		time_unit=#timeUnit.value#, 
+		grace_period=#gracePeriod#, 
+		grace_period_charge=#gracePeriodCharge#
+        WHERE id=#id#
+    </update>
+        
+    <delete id="deleteSimpleTariff" parameterClass="com.artivisi.billing.SimpleTariff">
+    	DELETE FROM billing_simple_tariff WHERE id=#id#
+    </delete>
+    
+    <select id="getAllSimpleTariff" resultClass="java.util.HashMap"> 
+        SELECT * FROM billing_simple_tariff ORDER BY id ASC
+    </select> 
+    
+    <select id="getSimpleTariffById" parameterClass="int" resultClass="java.util.HashMap"> 
+        SELECT * FROM billing_simple_tariff WHERE id=#id#
+    </select> 
+</sqlMap>

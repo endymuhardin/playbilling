@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd"> 
+<sqlMap namespace="Session">      
+    <insert id="insertSession" parameterClass="com.artivisi.billing.Session">
+        INSERT INTO billing_session VALUES 
+        (#id#, #member.id#, #ipAddress#, #startTime#, #endTime#, #lastVisit#, #expirationLimit#, #charge#, #status.value#)
+    </insert>
+    
+    <update id="updateSession" parameterClass="com.artivisi.billing.Session">
+        UPDATE billing_session SET
+        ip_address=#ipAddress#, 
+        start_time=#startTime#, 
+        end_time=#endTime#, 
+        last_visit=#lastVisit#, 
+        expiration_limit=#expirationLimit#, 
+        charge=#charge#, 
+        session_status=#status.value#
+        WHERE id=#id#
+    </update>
+        
+    <delete id="deleteSession" parameterClass="com.artivisi.billing.Session">
+    	DELETE FROM billing_session WHERE id=#id#
+    </delete>
+    
+    <select id="getAllSession" resultClass="java.util.HashMap"> 
+        SELECT * FROM billing_session ORDER BY start_time ASC
+    </select> 
+    
+    <select id="getSessionById" parameterClass="int" resultClass="java.util.HashMap"> 
+        SELECT * FROM billing_session WHERE id=#id#
+    </select> 
+    
+    <select id="getSessionByStatus" parameterClass="com.artivisi.billing.SessionStatus" resultClass="java.util.HashMap"> 
+        SELECT * FROM billing_session WHERE session_status=#value#
+    </select>
+    
+    <select id="getSessionByStatusForIp" parameterClass="java.util.Map" resultClass="java.util.HashMap"> 
+        SELECT * FROM billing_session 
+        WHERE session_status=#status.value# AND ip_address=#ipAddress#
+    </select>
+    
+    <select id="getSessionByStatusForMember" parameterClass="java.util.Map" resultClass="java.util.HashMap"> 
+        SELECT * FROM billing_session 
+        WHERE session_status=#status.value# AND member_id=#member.id#
+    </select>
+    
+    <select id="getSessionByInterval" parameterClass="java.util.Map" resultClass="java.util.HashMap"> 
+        <![CDATA[
+        SELECT * FROM billing_session 
+        WHERE end_time > #start# AND end_time < #end#
+        ]]>
+    </select>
+    
+    <select id="getSessionByIntervalForMember" parameterClass="java.util.Map" resultClass="java.util.HashMap"> 
+        <![CDATA[
+        SELECT * FROM billing_session 
+        WHERE end_time > #start# AND end_time < #end#
+        AND member_id=#member.id#
+        ]]>
+    </select>
+    
+</sqlMap>
