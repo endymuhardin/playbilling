@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE Configure PUBLIC 
+ "-//Mort Bay Consulting//DTD Configure 1.2//EN" 
+ "http://jetty.mortbay.org/configure_1_2.dtd">
+
+<Configure class="org.mortbay.jetty.Server">
+    <!--
+    <Call name="addListener">
+        <Arg>
+        <New class="org.mortbay.http.SocketListener">
+            <Set name="port">9090</Set>
+        </New>
+        </Arg>
+    </Call>
+    <Call name="addListener">
+        <Arg>
+        <New class="org.mortbay.http.SunJsseListener">
+            <Set name="Port">8443</Set>     
+            <Set name="Keystore">jetty/artivisi</Set>
+            <Set name="Password">keystore-artivisi!@#</Set>
+            <Set name="KeyPassword">keystore-artivisi!@#</Set>
+        </New>
+        </Arg>
+    </Call>
+    -->
+
+    <Call name="addListener">
+        <Arg>
+        <New class="org.mortbay.http.SocketListener">
+            <Set name="Port">8442</Set>     
+        </New>
+        </Arg>
+    </Call>
+    
+    <Call name="addWebApplication">
+        <Arg>/</Arg>
+        <Arg>./web/</Arg>
+    </Call>
+
+</Configure>
