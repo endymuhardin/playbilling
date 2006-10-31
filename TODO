@@ -1,0 +1,13 @@
+TODO
+----
+
+2006-06-23
+    - Refactor to become more modular
+
+2006-01-10
+    - Take care the logging system
+    - Remove bugs from release 1.0
+
+2005-06-23
+    - add init start/stop script
+

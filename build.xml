@@ -1,0 +1,56 @@
+<project name="playbilling" basedir="." default="run-jetty">
+
+    <property name="compile.dir" value="bin"/>
+    <property name="dist.dir" value="dist"/>
+
+    <path id="classpath">
+        <fileset dir="web/WEB-INF/lib" includes="**/*jar"/>
+        <fileset dir="jetty" includes="**/*jar"/>   
+        <pathelement location="src"/>
+        <pathelement location="${compile.dir}"/>
+    </path>
+    
+    <target name="init">
+        <tstamp/>
+        <mkdir dir="${compile.dir}"/>
+        <mkdir dir="${dist.dir}"/>   
+    </target>
+    
+    <target name="compile" depends="init">
+        <javac destdir="${compile.dir}" srcdir="src" classpathref="classpath"/>
+    </target>  
+    
+    <target name="copy-xml" depends="compile">
+      <copy todir="${compile.dir}">
+        <fileset dir="src" includes="**/*xml"/>
+        <fileset dir="src" includes="**/*properties"/> 
+      </copy>
+    </target>    
+ 
+    <target name="dist" depends="copy-xml">
+        <jar destfile="${dist.dir}/${ant.project.name}.jar">
+            <fileset dir="${compile.dir}"/>
+        </jar>
+        <copy todir="web/WEB-INF/lib" file="${dist.dir}/${ant.project.name}.jar"/>
+    </target>   
+    
+    <target name="war" depends="dist">
+        <zip destfile="${dist.dir}/${ant.project.name}.war">
+            <zipfileset dir="web" excludes="**/*database*"/>
+            <zipfileset dir="${compile.dir}" includes="*properties" prefix="WEB-INF/classes"/>               
+          </zip>
+     </target>   
+ 
+    <target name="run-jetty">
+	    <java classname="org.mortbay.jetty.Server" classpathref="classpath" fork="true" failonerror="true">
+		<arg value="jetty/jetty-config.xml"/>
+	    </java>
+    </target>   
+ 
+    <target name="clean">
+        <delete dir="${compile.dir}"/>
+        <delete dir="${dist.dir}"/>
+        <delete file="web/WEB-INF/lib/${ant.project.name}.jar"/>
+    </target>
+
+</project>

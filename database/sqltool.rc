@@ -1,0 +1,14 @@
+urlid mem
+url jdbc:hsqldb:mem:memdbid
+username sa
+password
+
+urlid file-billing
+url jdbc:hsqldb:file:billing
+username sa
+password
+
+urlid localhost-billing
+url jdbc:hsqldb:hsql://localhost/billing
+username sa
+password
