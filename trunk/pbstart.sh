@@ -11,6 +11,8 @@ echo
 echo "[playBilling] shutdown database server"
 sleep 1
 
+mkdir -p ./tmp
+
 kill `cat ./tmp/pid1` >/dev/null 2>&1
 
 cd database
