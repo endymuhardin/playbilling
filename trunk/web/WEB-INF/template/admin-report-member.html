@@ -1,0 +1,102 @@
+<h1>Member Report</h1>
+<p class="error">${vars.error?default("")}</p>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="29%">Member Name</td>
+    <td width="69%">${(vars.member.username)?default("")}</td>
+  </tr>
+  <tr>
+    <td>Total Usage</td>
+    <td>${(vars.member.totalDurationString())?default("")}</td>
+  </tr>
+  <tr>
+    <td>Total Bill</td>
+    <td>${(vars.member.totalCharge())?default("")} </td>
+  </tr>
+</table>
+<br />
+<br />
+<form method="post">
+	<table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td colspan="2">UserName : 
+          <select name="member_id">
+          <#list vars.allMembers as member>
+          <option value="${member.id}">${member.username}</option>
+          </#list>
+        </select></td>
+      </tr>
+      <tr>
+        <td width="50%"><input type="radio" name="searchoption" value="interval" checked="true">
+      Date, From :
+        <input name="start" type="text" id="start"> 
+        <IMG onclick="return showCalendar('start', 'y-mm-dd')" src="../img/calendar.gif"> (yyyy-mm-dd) </td>
+        <td width="50%">to :
+            <input name="end" type="text" id="end"> 
+			<IMG onclick="return showCalendar('end', 'y-mm-dd')" src="../img/calendar.gif"> (yyyy-mm-dd)			</td>
+      </tr>
+      <tr>
+        <td><input type="radio" name="searchoption" value="month">
+      Month :
+        <select name="month" id="month">
+          <option value="1">January</option>
+          <option value="2">February</option>
+          <option value="3">March</option>
+          <option value="4">April</option>
+          <option value="5">May</option>
+          <option value="6">June</option>
+          <option value="7">July</option>
+          <option value="8">August</option>
+          <option value="9">September</option>
+          <option value="10">October</option>
+          <option value="11">November</option>
+          <option value="12">December</option>
+        </select>
+&nbsp;&nbsp;</td>
+        <td>Year :
+          <select name="year" id="year">
+            <option value=2005>2005</option>
+			<option value=2006>2006</option>
+			<option value=2007>2007</option>
+			<option value=2008>2008</option>
+			<option value=2009>2009</option>
+			<option value=2010>2010</option>
+			<option value=2011>2011</option>
+			<option value=2012>2012</option>
+			<option value=2013>2013</option>
+			<option value=2014>2014</option>
+			<option value=2015>2015</option>
+          </select>
+</td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td>            <input type="submit" name="submit" value="View"/></td>
+      </tr>
+    </table>
+</form>
+<br /><br />
+<table id="members" width="100%" border="1" align="center">
+  <thead>
+  <tr>    
+    <th width="25%">Start Time</th>
+    <th width="25%">End Time</th>
+    <th width="25%">Total Duration</th>
+    <th width="25%">Total Bill</th>
+  </tr> 
+  </thead>   
+  <tbody>
+  
+  <#list vars.allSessions as session>
+  
+  <tr>
+    <td>${session.startTime?string("yyyy-MM-dd HH:mm:ss")}</td>
+    <td>${session.endTime?string("yyyy-MM-dd HH:mm:ss")}</td>
+    <td>${session.stringDuration}</td>
+    <td>${session.charge}</td>
+  </tr>
+  
+  </#list>
+  </tbody>
+  
+</table>

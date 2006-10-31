@@ -1,0 +1,83 @@
+<SCRIPT src="../js/calendar.js" type=text/javascript></SCRIPT>
+<SCRIPT src="../js/calendar-en.js" type=text/javascript></SCRIPT>
+<SCRIPT src="../js/calendar-start.js" type=text/javascript></SCRIPT>
+<LINK title=win2k-1 media=all href="../css/calendar-blue.css" type=text/css rel=stylesheet>
+
+<#import "spring.ftl" as spring />
+<h1>Edit Member</h1>
+<form method="POST">
+
+<table>
+	<tr>
+		<td align="right">Username</td>
+		<td><@spring.formInput "member.username"/><@spring.showErrors "<br>"/></td>
+	</tr><tr>
+		<td align="right">Full Name</td>
+		<td><@spring.formInput "member.fullname"/><@spring.showErrors "<br>"/></td>
+	</tr><tr><tr>
+		<td align="right">Password</td><@spring.bind "member.password" />
+		<td><input type="password" name="password" value="${spring.status.value?default("")}"/></td>
+	</tr><tr>
+		<td align="right">Password (Confirmation)</td>
+		<td><input type="password" name="password-confirm" class="text" value="${spring.status.value?default("")}"/><@spring.showErrors "<br>"/></td>
+	</tr><tr>
+		<td align="right">Email</td>
+		<td><@spring.formInput "member.email"/><@spring.showErrors "<br>"/></td>
+	</tr>		<tr>
+		<td align="right">Address</td>
+		<td><@spring.formTextarea "member.address"/><@spring.showErrors "<br>"/></td>
+	</tr><tr>
+		<td align="right">Credit</td><@spring.bind "member.credit" />
+		<td><input type="text" name="credit" value="${spring.status.value?string("######")}"><@spring.showErrors "<br>"/></td>
+	</tr><tr>
+		<td align="right">Session Expiration Limit</td>
+		<td><@spring.formInput "member.sessionExpirationLimit"/><@spring.showErrors "<br>"/></td>
+	</tr><tr>
+		<td align="right">Membership Expiration Date</td><@spring.bind "member.dateExpired" />
+		<td>
+			<input type="text" name="${spring.status.expression}" id=name="${spring.status.expression}" value="${spring.status.value}"/>
+			<@spring.showErrors "<br>"/>
+			<IMG onclick="return showCalendar('${spring.status.expression}', 'y-mm-dd')" src="../img/calendar.gif">(yyyy-mm-dd)			
+		</td>
+	</tr>	
+	
+	<tr>	
+		<td align="right">Tarif Class</td>
+		
+		<td>			
+		  <select name="tariff_id">
+		  	<#list vars.allTariff as tariff>
+		    <option value="${tariff.id}">${tariff.name}</option>
+		    </#list>
+		  </select>  
+		</td>
+	</tr>
+	
+	<tr>
+		<td align="right">Payment</td>
+		<td>
+			<@spring.formRadioButtons "member.type", vars.memberTypes, "&nbsp;&nbsp;" />
+			<@spring.showErrors "<br>"/>
+		</td>
+	</tr>
+	
+	<tr>
+		<td align="right">Status</td>
+		<td>
+			<@spring.formRadioButtons "member.status", vars.memberStatus, "&nbsp;&nbsp;" />
+			<@spring.showErrors "<br>"/>
+		</td>
+	</tr>
+	
+	<tr>
+		<td align="right">&nbsp;</td>
+		<td>
+			<input type="submit" name="save" value="Save" class="button"/>
+			<input type="submit" name="delete" value="Reset" class="button"/>
+			<a href="member.htm"><input type="button" name="cancel" value="Cancel" class="button"/></a>
+		
+		</td>
+	</tr>
+	
+</table>
+</form>

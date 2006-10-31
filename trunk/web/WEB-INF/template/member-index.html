@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<title>playBilling v1.2</title>
+    
+    <style type="text/css" media="screen">
+        @import url("../css/tools.css");
+        @import url("../css/typo.css");
+        @import url("../css/forms.css");
+        @import url("../css/layout-navtop-1col.css");
+        @import url("../css/layout.css");
+        @import url("../css/table.css");
+    </style>
+    <style type="text/css" media="screen">
+	@import url("../css/common-custom.css");
+    </style>
+    <script type="text/javascript" src="../js/sortTable.js"></script>
+<SCRIPT src="../js/calendar.js" type=text/javascript></SCRIPT>
+<SCRIPT src="../js/calendar-en.js" type=text/javascript></SCRIPT>
+<SCRIPT src="../js/calendar-start.js" type=text/javascript></SCRIPT>
+<LINK title=win2k-1 media=all href="../css/calendar-blue.css" type=text/css rel=stylesheet>
+</head>
+
+<body id="page-home" ${vars.tableSorter?default("")}>
+    
+    <div id="page">
+    
+        <div id="header" class="clearfix">
+        
+            <div id="branding">
+		playBilling v1.2
+            </div><!-- end branding -->
+            <hr />
+        </div><!-- end header -->
+        
+        
+        <div id="content">
+        
+            <div id="nav">
+                <div class="wrapper">
+                <h2 class="accessibility">Navigation</h2>
+                <ul class="clearfix">                     
+                     <li><a href="preferences.htm">Configuration</a></li>                     
+                     <li><a href="usage.htm">Usage</a></li>
+                     <li><strong><a href="../logout.html?nextUrl=member/login.html">Logout</a></strong></li>
+                </ul>
+                </div>
+                <hr />
+            </div><!-- end nav -->            
+        
+            <div id="main">
+                <#include "${vars.screen?default(\"blank.htm\")}"/>  
+            </div>
+            
+        </div><!-- end content -->
+        
+        
+        <div id="footer" class="clearfix">
+            <p>playBilling &copy; Copyright 2005</p>
+        </div><!-- end footer -->
+        
+    </div><!-- end page -->
+    
+</body>
+</html>

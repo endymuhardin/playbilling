@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+"http://www.springframework.org/dtd/spring-beans.dtd">
+
+
+<beans>    
+
+  <bean id="viewResolver"
+        class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+    <property name="cache"><value>true</value></property>
+    <property name="prefix"><value></value></property>
+    <property name="suffix"><value>.html</value></property>
+    <property name="exposeSpringMacroHelpers"><value>true</value></property>
+  </bean>
+  
+  <!-- Konfigurasi untuk Freemarker -->
+  <bean id="freemarkerConfig"
+        class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer" singleton="true">
+    <property name="templateLoaderPath">
+      <value>/WEB-INF/template/</value>
+    </property>
+  </bean>
+
+  <!-- Handler Mapping -->
+  <bean id="defaultHandlerMapping" class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping"/>  
+	
+  
+	<!-- Controller -->
+	
+	<bean name="/member.htm*" class="com.artivisi.billing.web.admin.MemberController">  	  
+	  <property name="billingService"><ref bean="billingService"/></property>
+	  <property name="mainView"><value>index</value></property>
+	  <property name="pageView"><value>admin-member-list.html</value></property>
+	  <property name="tableSorter">
+        <value> onload="initTable('members', new Array('number', null, null))"</value>
+      </property>
+	</bean>
+	
+	<bean name="memberValidator" class="com.artivisi.billing.web.admin.MemberValidator"/>
+	<bean name="/member-edit.htm*" class="com.artivisi.billing.web.admin.MemberFormController">    	  
+	  <property name="billingService"><ref bean="billingService"/></property>	  
+	  <property name="nextPage"><value>member.html</value></property>
+	  <property name="screen"><value>admin-member-edit.html</value></property>
+	  <property name="formView"><value>index</value></property>
+	  <property name="validator"><ref bean="memberValidator"/></property>	
+	  <property name="sessionForm"><value>true</value></property>            
+      <property name="commandName"><value>member</value></property>
+      <property name="commandClass"><value>com.artivisi.billing.Member</value></property> 
+	</bean>
+	
+	<bean name="/tariff.htm*" class="com.artivisi.billing.web.admin.TariffController">  	  
+	  <property name="billingService"><ref bean="billingService"/></property>
+	  <property name="mainView"><value>index</value></property>
+	  <property name="pageView"><value>admin-tariff-list.html</value></property>
+	  <property name="tableSorter">
+        <value> onload="initTable('rates', new Array('number', null, null))"</value>
+      </property>	  
+	</bean>
+	
+	<bean name="tariffValidator" class="com.artivisi.billing.web.admin.TariffValidator"/>
+	<bean name="/tariff-edit.htm*" class="com.artivisi.billing.web.admin.TariffFormController"> 
+	  <property name="billingService"><ref bean="billingService"/></property> 	   
+	  <property name="nextPage"><value>tariff.html</value></property>
+	  <property name="screen"><value>admin-tariff-edit.html</value></property>
+	  <property name="validator"><ref bean="tariffValidator"/></property>	
+	  <property name="formView"><value>index</value></property>
+	  <property name="sessionForm"><value>true</value></property>            
+      <property name="commandName"><value>tariff</value></property>
+      <property name="commandClass"><value>com.artivisi.billing.SimpleTariff</value></property> 
+	</bean>
+	
+	<bean name="/usage.htm*" class="com.artivisi.billing.web.admin.UsageMonitorController">
+	  <property name="billingService"><ref bean="billingService"/></property>  	  
+	  <property name="mainView"><value>index</value></property>
+	  <property name="pageView"><value>admin-usage.html</value></property>
+	  <property name="tableSorter">
+        <value> onload="initTable('sessions', new Array('number', null, null))"</value>
+      </property>
+	</bean>
+	
+	<bean name="/report-periodic.htm*" class="com.artivisi.billing.web.admin.PeriodicReportController">  	  
+	  <property name="billingService"><ref bean="billingService"/></property>
+	  <property name="mainView"><value>index</value></property>
+	  <property name="pageView"><value>admin-report-periodic.html</value></property>
+	  <property name="tableSorter">
+        <value> onload="initTable('members', new Array('number', null, null))"</value>
+      </property>
+	</bean>
+	
+	<bean name="/report-member.htm*" class="com.artivisi.billing.web.admin.MemberReportController">  	  	  
+	  <property name="billingService"><ref bean="billingService"/></property>
+	  <property name="mainView"><value>index</value></property>
+	  <property name="pageView"><value>admin-report-member.html</value></property>
+	  <property name="tableSorter">
+        <value> onload="initTable('members', new Array('number', null, null))"</value>
+      </property>
+	</bean>
+	
+</beans>  

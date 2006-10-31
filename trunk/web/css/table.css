@@ -1,0 +1,28 @@
+    
+    table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+    }
+    
+    table {
+        
+    }
+    
+    th, td {
+        padding: 3px;
+    }
+    
+    th {
+        cursor: pointer;
+        background: #eee;
+        color: #0000ff;
+    }
+    
+    th.sorted {
+        background: #ffd;
+        color: navy;
+    }
+    
+    img.sortIndicator {
+        margin-left: 3px;
+    }

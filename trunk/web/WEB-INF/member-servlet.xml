@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN"
+"http://www.springframework.org/dtd/spring-beans.dtd">
+
+
+<beans>    
+
+  <bean id="viewResolver"
+        class="org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver">
+    <property name="cache"><value>true</value></property>
+    <property name="prefix"><value></value></property>
+    <property name="suffix"><value>.html</value></property>
+    <property name="exposeSpringMacroHelpers"><value>true</value></property>
+  </bean>
+  
+  <!-- Konfigurasi untuk Velocity -->
+  <bean id="freemarkerConfig"
+        class="org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer" singleton="true">
+    <property name="templateLoaderPath">
+      <value>/WEB-INF/template/</value>
+    </property>
+  </bean>
+
+  <!-- Handler Mapping -->
+  <bean id="defaultHandlerMapping" class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping"/>  
+	
+  
+	<!-- Controller -->
+	
+	<bean name="/login.htm*" class="com.artivisi.billing.web.member.LoginController">  
+	  <property name="billingService"><ref bean="billingService"/></property>
+	  <property name="loginView"><value>session-login</value></property>
+	  <property name="memberPage"><value>preferences.html</value></property>
+	</bean> 
+	<bean name="/preferences.htm*" class="com.artivisi.billing.web.member.UserPreferenceController">  
+	  <property name="billingService"><ref bean="billingService"/></property>
+	  <property name="loginPage"><value>login.html</value></property>
+	  <property name="preferenceView"><value>member-preferences.html</value></property>
+	  <property name="mainView"><value>member-index</value></property>
+	</bean>      
+	<bean name="/usage.htm*" class="com.artivisi.billing.web.member.UserBillingReportController">  
+	  <property name="billingService"><ref bean="billingService"/></property>
+	  <property name="loginPage"><value>login.html</value></property>
+	  <property name="usageView"><value>member-usage.html</value></property>
+	  <property name="mainView"><value>member-index</value></property>
+	</bean>   
+	
+</beans>  
