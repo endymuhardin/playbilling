@@ -10,6 +10,95 @@
   <properties>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
+    <spring.version>1.2.9</spring.version>
+    <servlet.version>2.5</servlet.version>
+    <log4j.version>1.2.9</log4j.version>
+    <joda-time.version>1.0</joda-time.version>
+    <junit.version>4.1</junit.version>
+    <acegi-security.version>0.8.2</acegi-security.version>
+    <freemarker.version>2.3.2</freemarker.version>
+    <quartz.version>1.4.5</quartz.version>
+    <hsqldb.version>1.7.2.2</hsqldb.version>
+    <ibatis.version>2.1.7.597</ibatis.version>
+    <commons-dbcp.version>1.2.1</commons-dbcp.version>
+    <standard-taglib.version>1.0.6</standard-taglib.version>
   </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-webmvc</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-orm</artifactId>
+      <version>${spring.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>log4j</groupId>
+      <artifactId>log4j</artifactId>
+      <version>${log4j.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>joda-time</groupId>
+      <artifactId>joda-time</artifactId>
+      <version>${joda-time.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>acegisecurity</groupId>
+      <artifactId>acegi-security</artifactId>
+      <version>${acegi-security.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>freemarker</groupId>
+      <artifactId>freemarker</artifactId>
+      <version>${freemarker.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>quartz</groupId>
+      <artifactId>quartz</artifactId>
+      <version>${quartz.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>hsqldb</groupId>
+      <artifactId>hsqldb</artifactId>
+      <version>${hsqldb.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.ibatis</groupId>
+      <artifactId>ibatis2-sqlmap</artifactId>
+      <version>${ibatis.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.ibatis</groupId>
+      <artifactId>ibatis2-dao</artifactId>
+      <version>${ibatis.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>commons-dbcp</groupId>
+      <artifactId>commons-dbcp</artifactId>
+      <version>${commons-dbcp.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>taglibs</groupId>
+      <artifactId>standard</artifactId>
+      <version>${standard-taglib.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>servlet-api</artifactId>
+      <version>${servlet.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+  </dependencies>
 
 </project>
