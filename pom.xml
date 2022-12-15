@@ -10,7 +10,7 @@
   <properties>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
-    <spring.version>1.2.9</spring.version>
+    <spring.version>5.2.20.RELEASE</spring.version>
     <servlet.version>2.5</servlet.version>
     <log4j.version>1.2.9</log4j.version>
     <joda-time.version>1.0</joda-time.version>
